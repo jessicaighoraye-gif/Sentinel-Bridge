@@ -139,3 +139,4 @@ Fictional company, simulated evidence, no live integrations. The engine evaluate
 | `docs/` | Charter, scope, architecture, methodologies |
 | `tests/` | 234 tests, one flat folder (see `tests/README.md`) |
 "# Sentinel-Bridge" 
+"# Sentinel-Bridge" 
