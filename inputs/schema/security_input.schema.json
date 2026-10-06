@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sentinelbridge.local/schema/security_input.schema.json",
+  "title": "SentinelBridge security input",
+  "description": "One assessment input. Each sample in inputs/evidence_samples.json has this format.",
+  "type": "object",
+  "properties": {
+    "assessment_id": {"type": "string", "pattern": "^ASM-[A-Z0-9-]{3,40}$"},
+    "organization": {"type": "string", "minLength": 1},
+    "collected_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+      "description": "When the evidence was collected. All time arithmetic is measured against it."
+    },
+    "description": {"type": "string"},
+    "evidence": {"$ref": "evidence.schema.json"}
+  },
+  "required": ["assessment_id", "organization", "collected_at", "evidence"],
+  "additionalProperties": false
+}

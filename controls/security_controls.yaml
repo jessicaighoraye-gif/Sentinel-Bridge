@@ -1,0 +1,269 @@
+# SentinelBridge security controls. 12 controls, one detector each.
+
+# Notes
+# - evidence_fields lists the evidence a detector reads. 
+# - Numeric baselines (days, TLS version, ports) live as named constants in the detector
+#   modules. Prose here names the baseline but the constant is authoritative.
+# - applies_to values come from asset_categories in company/florence_profile.yaml.
+# - Evidence is simulated. Nothing here connects to a live system.
+
+
+controls:
+  - control_id: CTRL-IAM-001
+    name: Privileged Accounts Without MFA
+    description: Privileged human accounts must have MFA enforced.
+    detection_objective: Identify privileged human accounts where MFA is not enrolled or not enforced.
+    detector_id: DET-MFA
+    detector_module: engine/detectors/identity/mfa_detector.py
+    severity_on_fail: critical
+    evidence_block: identity
+    evidence_fields:
+      - user_id
+      - privileged_status
+      - mfa_enrollment_status
+      - mfa_enforcement_status
+      - account_type
+    scope:
+      applies_to: [identity_platform]
+      description: Privileged human accounts only.
+    known_exceptions:
+      - Non-human service accounts are excluded. They need separate key and certificate controls.
+
+  - control_id: CTRL-IAM-002
+    name: Excessive User Privileges
+    description: Users should hold only the permissions justified by observed usage or approved scope.
+    detection_objective: Identify assigned permissions that are not justified by observed usage or approved scope.
+    detector_id: DET-EXCESS-PRIV
+    detector_module: engine/detectors/identity/excessive_privilege_detector.py
+    severity_on_fail: medium
+    evidence_block: identity
+    evidence_fields:
+      - user_id
+      - assigned_permissions
+      - used_permissions
+      - administrative_status
+      - resource_scope
+      - usage_period
+    scope:
+      applies_to: [identity_platform]
+      description: Human user accounts with assigned permissions. Default analysis period is 90 days.
+    known_exceptions:
+      - Break-glass and emergency administrative accounts must be explicitly identified and handled under documented emergency-access rules.
+
+  - control_id: CTRL-IAM-003
+    name: Inactive Enabled Accounts
+    description: Accounts with no recent legitimate sign-in must not remain enabled.
+    detection_objective: Identify enabled human accounts with no recent legitimate authentication activity.
+    detector_id: DET-INACTIVE-ACCT
+    detector_module: engine/detectors/identity/inactive_account_detector.py
+    severity_on_fail: medium
+    evidence_block: identity
+    evidence_fields:
+      - user_id
+      - account_status
+      - last_login
+      - account_creation_date
+      - password_last_set
+      - account_type
+    scope:
+      applies_to: [identity_platform]
+      description: Enabled human accounts.
+    known_exceptions:
+      - Legitimate service, seasonal, or explicitly exempt accounts must be identified through account metadata.
+
+  - control_id: CTRL-IAM-004
+    name: Password Policy Violations
+    description: Password policies must meet Florence's defined baseline for applicable accounts.
+    detection_objective: Determine whether applicable password policies satisfy the defined baseline.
+    detector_id: DET-PASSWORD
+    detector_module: engine/detectors/identity/password_policy_detector.py
+    severity_on_fail: medium
+    evidence_block: identity
+    evidence_fields:
+      - tenant_or_domain
+      - minimum_password_length
+      - complexity_requirements
+      - maximum_password_age
+      - lockout_configuration
+      - password_last_set
+      - authentication_source
+    scope:
+      applies_to: [identity_platform]
+      description: Non-federated, local, or otherwise applicable accounts.
+    known_exceptions:
+      - Federated identities are not evaluated against local password-policy requirements.
+
+  - control_id: CTRL-DATA-001
+    name: Sensitive Data Unencrypted at Rest
+    description: Sensitive data stores must have encryption enabled with an appropriate key configuration.
+    detection_objective: Determine whether sensitive data stores have encryption enabled and appropriate key configuration.
+    detector_id: DET-ENC-REST
+    detector_module: engine/detectors/data_protection/encryption_at_rest_detector.py
+    severity_on_fail: high
+    evidence_block: data_protection
+    evidence_fields:
+      - resource_id
+      - resource_type
+      - encryption_status
+      - key_id
+      - encryption_algorithm
+      - key_management
+    scope:
+      applies_to: [customer_database, cloud_storage, backup_systems]
+      description: Data stores whose tier is marked sensitive in company/data_classification.yaml. Tier 1 datasets should use customer-managed keys where applicable.
+    known_exceptions: []
+
+  - control_id: CTRL-DATA-002
+    name: Sensitive Data Unencrypted in Transit
+    description: Sensitive data must be transmitted with appropriate transport protection.
+    detection_objective: Identify sensitive-data flows that do not meet the transport-security requirement.
+    detector_id: DET-ENC-TRANSIT
+    detector_module: engine/detectors/data_protection/encryption_in_transit_detector.py
+    severity_on_fail: high
+    evidence_block: data_protection
+    evidence_fields:
+      - source
+      - destination
+      - port
+      - protocol
+      - tls_version
+      - cipher
+      - flow_scope
+      - protection_mechanism
+    scope:
+      applies_to: [payment_application_infrastructure, customer_database, cloud_storage]
+      description: Flows carrying sensitive data. Default requirement is TLS 1.2 or stronger for applicable external communication.
+    known_exceptions:
+      - Protected internal service-to-service communication may use approved mechanisms such as mTLS or service mesh controls.
+
+  - control_id: CTRL-END-001
+    name: Unsupported or Vulnerable Software
+    description: Assets must not run software that is beyond vendor support or carries unresolved vulnerabilities requiring treatment.
+    detection_objective: Identify software that is beyond vendor support or contains vulnerabilities requiring treatment.
+    detector_id: DET-VULN-SW
+    detector_module: engine/detectors/endpoint/vulnerable_software_detector.py
+    severity_on_fail: high
+    evidence_block: vulnerability
+    evidence_fields:
+      - asset_id
+      - software_name
+      - version
+      - cve
+      - cvss
+      - vendor_support_status
+      - end_of_life_date
+      - risk_acceptance_status
+    scope:
+      applies_to: [payment_application_infrastructure, employee_endpoints]
+      description: Servers and endpoints with installed software.
+    known_exceptions:
+      - Documented vendor extended support or accepted-risk status must be considered where applicable.
+
+  - control_id: CTRL-END-002
+    name: Missing Endpoint Protection
+    description: Applicable endpoints must run active and current endpoint security protection.
+    detection_objective: Determine whether required endpoint protection is installed, active, and sufficiently current.
+    detector_id: DET-ENDPOINT
+    detector_module: engine/detectors/endpoint/endpoint_protection_detector.py
+    severity_on_fail: high
+    evidence_block: endpoint
+    evidence_fields:
+      - device_id
+      - hostname
+      - ip
+      - protection_status
+      - installation_status
+      - definition_update_status
+      - device_type
+      - endpoint_scope_status
+    scope:
+      applies_to: [employee_endpoints]
+      description: Onsite and remote employee endpoints.
+    known_exceptions:
+      - Ephemeral workloads and systems outside endpoint-security scope must be explicitly identified.
+
+  - control_id: CTRL-LOG-001
+    name: Inadequate Security Logging and Monitoring
+    description: Required security log sources must produce telemetry that is received at an acceptable level.
+    detection_objective: Determine whether required logging sources are producing security telemetry at an acceptable level.
+    detector_id: DET-LOGGING
+    detector_module: engine/detectors/resilience/logging_monitoring_detector.py
+    severity_on_fail: medium
+    evidence_block: logging
+    evidence_fields:
+      - log_source
+      - log_type
+      - last_received_timestamp
+      - expected_ingestion_rate
+      - audit_configuration
+      - source_status
+      - required_source
+      - observed_ingestion_rate
+    scope:
+      applies_to: [security_logging]
+      description: Required log sources feeding the central logging platform.
+    known_exceptions: []
+    notes: The MVP uses defined thresholds. It does not use predictive anomaly detection.
+
+  - control_id: CTRL-CLD-001
+    name: Exposed Cloud Storage Containing Sensitive Data
+    description: Cloud storage holding sensitive data must not be publicly exposed.
+    detection_objective: Correlate public exposure with sensitive-data classification.
+    detector_id: DET-CLOUD-EXPOSURE
+    detector_module: engine/detectors/exposure/cloud_storage_exposure_detector.py
+    severity_on_fail: critical
+    evidence_block: cloud_storage
+    evidence_fields:
+      - storage_id
+      - public_access_status
+      - acl_configuration
+      - dlp_findings
+    scope:
+      applies_to: [cloud_storage]
+      description: Cloud storage resources.
+    known_exceptions: []
+    notes: Public storage that holds no sensitive data must not produce the same finding as public storage that holds sensitive data. The detection methodology defines the outcome for each case.
+
+  - control_id: CTRL-BCP-001
+    name: Inadequate Backup and Recovery Controls
+    description: Critical stateful assets must have backup coverage, successful execution, retention, and protection.
+    detection_objective: Determine whether applicable assets have appropriate backup coverage, successful execution, retention, and protection.
+    detector_id: DET-BACKUP
+    detector_module: engine/detectors/resilience/backup_recovery_detector.py
+    severity_on_fail: high
+    evidence_block: backup
+    evidence_fields:
+      - resource_id
+      - backup_policy
+      - last_backup_status
+      - last_backup_timestamp
+      - retention
+      - immutability_status
+      - statefulness
+    scope:
+      applies_to: [customer_database, cloud_storage, payment_application_infrastructure]
+      description: Stateful assets that need recovery protection.
+    known_exceptions:
+      - Stateless assets may be excluded when explicitly identified.
+
+  - control_id: CTRL-NET-001
+    name: Unrestricted Remote Access
+    description: Remote administrative access must not be exposed broadly without adequate restriction.
+    detection_objective: Identify risky remote-access rules that expose administrative services broadly.
+    detector_id: DET-REMOTE-ACCESS
+    detector_module: engine/detectors/exposure/remote_access_detector.py
+    severity_on_fail: critical
+    evidence_block: access_control
+    evidence_fields:
+      - firewall_rule
+      - source_cidr
+      - destination
+      - port
+      - protocol
+      - mfa_required
+      - access_mechanism
+    scope:
+      applies_to: [remote_access]
+      description: Inbound and remote administrative access rules. Default high-risk conditions are SSH (22) or RDP (3389) exposed to 0.0.0.0/0.
+    known_exceptions:
+      - Approved zero trust network access, VPN, reverse proxy, or equivalent controlled mechanisms may be treated differently when the evidence demonstrates the control.

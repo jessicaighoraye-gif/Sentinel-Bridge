@@ -1,0 +1,191 @@
+{
+  "assumptions": {
+    "trials": 10000,
+    "seed": 42,
+    "loss_threshold_usd": 250000,
+    "top_n": 6,
+    "model": "Poisson events per year, lognormal loss per event, independent risks",
+    "note": "Inputs are illustrative project assumptions in risk/risk_parameters.yaml"
+  },
+  "risks": [
+    {
+      "risk_id": "RISK-REMOTE-ACCESS-01",
+      "control_id": "CTRL-NET-001",
+      "inherent_risk": 25,
+      "retest_status": "PASS",
+      "event_rate_before": 0.4,
+      "event_rate_after": 0.04,
+      "analytic_expected_loss_before": 329625,
+      "before": {
+        "expected_loss": 327773,
+        "p50": 0,
+        "p90": 992585,
+        "prob_exceed_threshold": 0.2468
+      },
+      "after": {
+        "expected_loss": 33861,
+        "p50": 0,
+        "p90": 0,
+        "prob_exceed_threshold": 0.0266
+      }
+    },
+    {
+      "risk_id": "RISK-CLOUD-EXPOSURE-01",
+      "control_id": "CTRL-CLD-001",
+      "inherent_risk": 20,
+      "retest_status": "PASS",
+      "event_rate_before": 0.3,
+      "event_rate_after": 0.015,
+      "analytic_expected_loss_before": 219750,
+      "before": {
+        "expected_loss": 217603,
+        "p50": 0,
+        "p90": 647751,
+        "prob_exceed_threshold": 0.1823
+      },
+      "after": {
+        "expected_loss": 10715,
+        "p50": 0,
+        "p90": 0,
+        "prob_exceed_threshold": 0.0095
+      }
+    },
+    {
+      "risk_id": "RISK-MFA-01",
+      "control_id": "CTRL-IAM-001",
+      "inherent_risk": 20,
+      "retest_status": "PASS",
+      "event_rate_before": 0.25,
+      "event_rate_after": 0.025,
+      "analytic_expected_loss_before": 103045,
+      "before": {
+        "expected_loss": 111202,
+        "p50": 0,
+        "p90": 342335,
+        "prob_exceed_threshold": 0.1248
+      },
+      "after": {
+        "expected_loss": 11072,
+        "p50": 0,
+        "p90": 0,
+        "prob_exceed_threshold": 0.0108
+      }
+    },
+    {
+      "risk_id": "RISK-ENDPOINT-02",
+      "control_id": "CTRL-END-002",
+      "inherent_risk": 16,
+      "retest_status": "FAIL",
+      "event_rate_before": 0.2,
+      "event_rate_after": 0.2,
+      "analytic_expected_loss_before": 49462,
+      "before": {
+        "expected_loss": 49303,
+        "p50": 0,
+        "p90": 135876,
+        "prob_exceed_threshold": 0.0599
+      },
+      "after": {
+        "expected_loss": 51928,
+        "p50": 0,
+        "p90": 150855,
+        "prob_exceed_threshold": 0.0652
+      }
+    },
+    {
+      "risk_id": "RISK-CLOUD-EXPOSURE-02",
+      "control_id": "CTRL-CLD-001",
+      "inherent_risk": 15,
+      "retest_status": "PASS",
+      "event_rate_before": 0.3,
+      "event_rate_after": 0.015,
+      "analytic_expected_loss_before": 219750,
+      "before": {
+        "expected_loss": 219475,
+        "p50": 0,
+        "p90": 659668,
+        "prob_exceed_threshold": 0.1826
+      },
+      "after": {
+        "expected_loss": 7808,
+        "p50": 0,
+        "p90": 0,
+        "prob_exceed_threshold": 0.008
+      }
+    },
+    {
+      "risk_id": "RISK-VULN-SW-02",
+      "control_id": "CTRL-END-001",
+      "inherent_risk": 15,
+      "retest_status": "FAIL",
+      "event_rate_before": 0.15,
+      "event_rate_after": 0.15,
+      "analytic_expected_loss_before": 82406,
+      "before": {
+        "expected_loss": 80249,
+        "p50": 0,
+        "p90": 162009,
+        "prob_exceed_threshold": 0.0797
+      },
+      "after": {
+        "expected_loss": 81594,
+        "p50": 0,
+        "p90": 185148,
+        "prob_exceed_threshold": 0.0868
+      }
+    }
+  ],
+  "portfolio": {
+    "before": {
+      "expected_loss": 1005604,
+      "p50": 518979,
+      "p90": 2615105,
+      "prob_exceed_threshold": 0.642
+    },
+    "after": {
+      "expected_loss": 196978,
+      "p50": 0,
+      "p90": 564716,
+      "prob_exceed_threshold": 0.1977
+    },
+    "distribution": {
+      "bin_edges_usd": [
+        0,
+        799734,
+        1599468,
+        2399203,
+        3198937,
+        3998671,
+        4798405,
+        5598140,
+        6397874,
+        7197608,
+        7997342
+      ],
+      "counts_before": [
+        6145,
+        1838,
+        883,
+        451,
+        270,
+        149,
+        109,
+        49,
+        37,
+        69
+      ],
+      "counts_after": [
+        9331,
+        408,
+        149,
+        60,
+        24,
+        9,
+        4,
+        4,
+        0,
+        11
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+# Decision rules. The business decision applies these to the risk register, not personal opinion.
+bands:
+  Critical:
+    target_days: 7
+    approver: Executive team
+    treatment_by_effort: {low: Mitigate, medium: Mitigate, high: Mitigate}
+  High:
+    target_days: 30
+    approver: Executive team
+    treatment_by_effort: {low: Mitigate, medium: Mitigate, high: Mitigate}
+  Medium:
+    target_days: 90
+    approver: Security Lead
+    treatment_by_effort: {low: Mitigate, medium: Mitigate, high: Accept}
+  Low:
+    target_days: 180
+    approver: Risk owner
+    treatment_by_effort: {low: Accept, medium: Accept, high: Accept}
+accept_conditions: Acceptance is time-boxed to 90 days, needs a compensating control and written sign-off from the approver.
+transfer_option: A risk that stays High after retest may be partly transferred, while mitigation is completed.
+reassessment_triggers:
+  - Any control that passed on retest returns to FAIL.
+  - A new critical vulnerability is published for software in the inventory.
+  - Florence adds a new payment product, partner connection, or sensitive data store.
+  - Quarterly review, or sooner after any security incident.

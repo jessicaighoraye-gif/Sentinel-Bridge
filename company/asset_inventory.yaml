@@ -1,0 +1,121 @@
+# Florence Inc. asset inventory (fictional).
+# Asset IDs use the AST- prefix and are referenced by scenarios and findings.
+# Tier values come from data_classification.yaml.
+
+assets:
+  - asset_id: AST-IDP-001
+    name: Identity platform (cloud identity tenant)
+    category: identity_platform
+    environment: cloud
+    criticality: critical
+    data_classification: tier_1
+    business_function: Workforce authentication and access management
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-DB-001
+    name: Customer database
+    category: customer_database
+    environment: cloud
+    criticality: critical
+    data_classification: tier_1
+    business_function: Stores customer PII and payment-related records
+    owner_role: Head of Engineering
+
+  - asset_id: AST-APP-001
+    name: Payment application platform
+    category: payment_application_infrastructure
+    environment: cloud
+    criticality: critical
+    data_classification: tier_1
+    business_function: Customer-facing payment processing
+    owner_role: Head of Engineering
+
+  - asset_id: AST-SRV-001
+    name: Payment gateway server
+    category: payment_application_infrastructure
+    environment: on_premises
+    criticality: critical
+    data_classification: tier_1
+    business_function: Routes payment transactions to partner networks
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-SRV-002
+    name: Reconciliation server
+    category: payment_application_infrastructure
+    environment: on_premises
+    criticality: critical
+    data_classification: tier_1
+    business_function: Settlement and transaction reconciliation
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-END-001
+    name: Onsite endpoint fleet (laptops and workstations)
+    category: employee_endpoints
+    environment: on_premises
+    criticality: high
+    data_classification: tier_2
+    business_function: Daily work for the 70 onsite employees
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-END-002
+    name: Remote endpoint fleet (laptops)
+    category: employee_endpoints
+    environment: remote
+    criticality: high
+    data_classification: tier_2
+    business_function: Daily work for the 30 remote employees
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-STO-001
+    name: Customer documents storage
+    category: cloud_storage
+    environment: cloud
+    criticality: high
+    data_classification: tier_1
+    business_function: Holds customer identity and onboarding documents
+    owner_role: Data Protection Officer
+
+  - asset_id: AST-STO-002
+    name: Finance reports storage
+    category: cloud_storage
+    environment: cloud
+    criticality: medium
+    data_classification: tier_2
+    business_function: Internal financial and management reports
+    owner_role: Head of Finance
+
+  - asset_id: AST-STO-003
+    name: Public website assets storage
+    category: cloud_storage
+    environment: cloud
+    criticality: low
+    data_classification: tier_4
+    business_function: Marketing images and public downloads, public by design
+    owner_role: Head of Marketing
+
+  - asset_id: AST-BKP-001
+    name: Backup system
+    category: backup_systems
+    environment: cloud
+    criticality: critical
+    data_classification: tier_1
+    business_function: Backup and recovery of critical systems
+    owner_role: IT Operations Manager
+
+  - asset_id: AST-LOG-001
+    name: Central security logging platform
+    category: security_logging
+    environment: cloud
+    criticality: high
+    data_classification: tier_2
+    business_function: Collects and retains security telemetry
+    owner_role: Security Lead
+
+  - asset_id: AST-NET-001
+    name: Perimeter firewall and remote-access gateway
+    category: remote_access
+    environment: on_premises
+    criticality: critical
+    data_classification: tier_3
+    business_function: Controls inbound and remote administrative access for all 100 employees (70 onsite, 30 remote)
+    owner_role: Security Lead

@@ -1,0 +1,24 @@
+# Florence Inc. data classification (fictional).
+# Tiers marked sensitive: true count as sensitive data for
+# CTRL-DATA-001, CTRL-DATA-002 and CTRL-CLD-001.
+# Tiers are assigned to assets in asset_inventory.yaml
+
+tiers:
+  tier_1:
+    label: Restricted
+    sensitive: true
+    description: Data whose exposure would cause serious harm to customers or to Florence.
+  tier_2:
+    label: Confidential
+    sensitive: true
+    description: Internal data that must not be disclosed outside Florence.
+  tier_3:
+    label: Internal
+    sensitive: false
+    description: Operational data with limited impact if disclosed.
+  tier_4:
+    label: Public
+    sensitive: false
+    description: Data intended for public release.
+
+

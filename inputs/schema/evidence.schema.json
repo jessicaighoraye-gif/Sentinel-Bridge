@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sentinelbridge.local/schema/evidence.schema.json",
+  "title": "SentinelBridge evidence",
+  "description": "Evidence blocks. Every block and every record list is optional so that missing evidence reaches the detectors and produces INSUFFICIENT. Fields inside a record are nullable for the same reason. Values that are present must be well formed, otherwise the input is an INPUT_ERROR.",
+  "type": "object",
+  "$defs": {
+    "assetId": {
+      "type": "string",
+      "pattern": "^AST-[A-Z]{2,4}-[0-9]{3}$",
+      "description": "AST- id from company/asset_inventory.yaml."
+    },
+    "recordId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,6}-[0-9]{4}$",
+      "description": "Unique within one scenario, e.g. ACC-0007."
+    },
+    "timestamp": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+      "description": "ISO 8601 UTC, e.g. 2026-10-02T09:00:00Z."
+    },
+    "dateOrTimestamp": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z)?$",
+      "description": "ISO 8601 date or UTC timestamp."
+    }
+  },
+  "properties": {
+    "identity": {
+      "type": "object",
+      "description": "Identity platform evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "accounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One user account. Record ids like ACC-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "user_id": {"type": ["string", "null"]},
+              "account_type": {"enum": ["human", "service", "break_glass", "seasonal", null]},
+              "account_status": {"enum": ["enabled", "disabled", null]},
+              "privileged_status": {"type": ["boolean", "null"]},
+              "administrative_status": {"type": ["boolean", "null"]},
+              "mfa_enrollment_status": {"enum": ["enrolled", "not_enrolled", "unknown", null]},
+              "mfa_enforcement_status": {"enum": ["enforced", "not_enforced", "unknown", null]},
+              "assigned_permissions": {"type": ["array", "null"], "items": {"type": "string"}},
+              "used_permissions": {"type": ["array", "null"], "items": {"type": "string"}},
+              "resource_scope": {"type": ["array", "null"], "items": {"type": "string"}},
+              "usage_period": {"type": ["integer", "null"], "minimum": 0},
+              "last_login": {"$ref": "#/$defs/timestamp"},
+              "account_creation_date": {"$ref": "#/$defs/dateOrTimestamp"},
+              "password_last_set": {"$ref": "#/$defs/dateOrTimestamp"}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        },
+        "password_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One tenant or domain password policy. Record ids like POL-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "tenant_or_domain": {"type": ["string", "null"]},
+              "authentication_source": {"enum": ["local", "federated", null]},
+              "minimum_password_length": {"type": ["integer", "null"], "minimum": 0},
+              "complexity_requirements": {"type": ["boolean", "null"]},
+              "maximum_password_age": {"type": ["integer", "null"], "minimum": 0},
+              "lockout_configuration": {
+                "type": ["object", "null"],
+                "properties": {
+                  "threshold": {"type": ["integer", "null"], "minimum": 0},
+                  "duration_minutes": {"type": ["integer", "null"], "minimum": 0}
+                },
+                "additionalProperties": false
+              },
+              "password_last_set": {"$ref": "#/$defs/dateOrTimestamp"}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "endpoint": {
+      "type": "object",
+      "description": "Endpoint protection evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One device. Record ids like DEV-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "device_id": {"type": ["string", "null"]},
+              "hostname": {"type": ["string", "null"]},
+              "ip": {
+                "type": ["string", "null"],
+                "pattern": "^(?:(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)|[0-9a-fA-F:]*:[0-9a-fA-F:]*)$"
+              },
+              "device_type": {"type": ["string", "null"]},
+              "installation_status": {"enum": ["installed", "not_installed", "unknown", null]},
+              "protection_status": {"enum": ["active", "inactive", "unknown", null]},
+              "definition_update_status": {"enum": ["current", "outdated", "unknown", null]},
+              "endpoint_scope_status": {"enum": ["in_scope", "ephemeral", "out_of_scope", null]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "vulnerability": {
+      "type": "object",
+      "description": "Installed software and vulnerability evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "software": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One installed software item. Record ids like SW-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "software_name": {"type": ["string", "null"]},
+              "version": {"type": ["string", "null"]},
+              "cve": {"type": ["string", "null"], "pattern": "^CVE-\\d{4}-\\d{4,}$"},
+              "cvss": {"type": ["number", "null"], "minimum": 0, "maximum": 10},
+              "vendor_support_status": {"enum": ["supported", "extended_support", "end_of_life", "unknown", null]},
+              "end_of_life_date": {"$ref": "#/$defs/dateOrTimestamp"},
+              "risk_acceptance_status": {"enum": ["none", "accepted", null]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "logging": {
+      "type": "object",
+      "description": "Security logging evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One log source. Record ids like LOG-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "log_source": {"type": ["string", "null"]},
+              "log_type": {"type": ["string", "null"]},
+              "last_received_timestamp": {"$ref": "#/$defs/timestamp"},
+              "expected_ingestion_rate": {"type": ["number", "null"], "minimum": 0},
+              "observed_ingestion_rate": {"type": ["number", "null"], "minimum": 0},
+              "source_status": {"enum": ["active", "inactive", "unknown", null]},
+              "audit_configuration": {"enum": ["enabled", "disabled", "unknown", null]},
+              "required_source": {"type": ["boolean", "null"]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "access_control": {
+      "type": "object",
+      "description": "Remote access and firewall evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One firewall rule. Record ids like RULE-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "firewall_rule": {"type": ["string", "null"]},
+              "source_cidr": {
+                "type": ["string", "null"],
+                "pattern": "^(?:(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)/(?:3[0-2]|[12]?\\d)|[0-9a-fA-F:]*:[0-9a-fA-F:]*/(?:12[0-8]|1[01]\\d|[1-9]?\\d))$"
+              },
+              "destination": {"type": ["string", "null"]},
+              "port": {"type": ["integer", "null"], "minimum": 1, "maximum": 65535},
+              "protocol": {"enum": ["tcp", "udp", "any", null]},
+              "mfa_required": {"type": ["boolean", "null"]},
+              "access_mechanism": {"enum": ["direct", "vpn", "ztna", "reverse_proxy", "bastion", null]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "data_protection": {
+      "type": "object",
+      "description": "Encryption evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "at_rest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One data store. Record ids like ENC-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "resource_id": {"type": ["string", "null"]},
+              "resource_type": {"type": ["string", "null"]},
+              "encryption_status": {"enum": ["enabled", "disabled", "unknown", null]},
+              "key_management": {"enum": ["customer_managed", "provider_managed", "none", null]},
+              "key_id": {"type": ["string", "null"]},
+              "encryption_algorithm": {"type": ["string", "null"]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        },
+        "in_transit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One data flow. Record ids like FLOW-0001.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "source": {"type": ["string", "null"]},
+              "destination": {"type": ["string", "null"]},
+              "port": {"type": ["integer", "null"], "minimum": 1, "maximum": 65535},
+              "protocol": {"enum": ["https", "tls", "http", "ftp", "telnet", "other", null]},
+              "tls_version": {"enum": ["1.0", "1.1", "1.2", "1.3", null]},
+              "cipher": {"type": ["string", "null"]},
+              "flow_scope": {"enum": ["external", "internal", null]},
+              "protection_mechanism": {"enum": ["tls", "mtls", "service_mesh", "none", null]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "cloud_storage": {
+      "type": "object",
+      "description": "Cloud storage exposure evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "buckets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One storage resource. Record ids like BKT-0001. dlp_findings: null means no scan, an empty list means a scan found nothing.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "storage_id": {"type": ["string", "null"]},
+              "public_access_status": {"enum": ["public", "private", "unknown", null]},
+              "acl_configuration": {"type": ["string", "null"]},
+              "dlp_findings": {"type": ["array", "null"], "items": {"type": "string"}}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    },
+    "backup": {
+      "type": "object",
+      "description": "Backup and recovery evidence.",
+      "properties": {
+        "source": {"type": "string", "minLength": 1, "description": "Where the simulated evidence came from."},
+        "coverage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "One resource. Record ids like BCK-0001. retention is in days.",
+            "properties": {
+              "record_id": {"$ref": "#/$defs/recordId"},
+              "asset_id": {"$ref": "#/$defs/assetId"},
+              "resource_id": {"type": ["string", "null"]},
+              "statefulness": {"enum": ["stateful", "stateless", "unknown", null]},
+              "backup_policy": {"type": ["string", "null"]},
+              "last_backup_status": {"enum": ["success", "failed", "unknown", null]},
+              "last_backup_timestamp": {"$ref": "#/$defs/timestamp"},
+              "retention": {"type": ["integer", "null"], "minimum": 0},
+              "immutability_status": {"enum": ["protected", "unprotected", "unknown", null]}
+            },
+            "required": ["record_id", "asset_id"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["source"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

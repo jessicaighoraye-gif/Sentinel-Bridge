@@ -1,0 +1,32 @@
+
+# They are project assumptions, not measurements and not industry statistics.
+scales:
+  likelihood: {1: Rare, 2: Unlikely, 3: Possible, 4: Likely, 5: Almost certain}
+  # Impact is taken from the criticality of the affected asset in company/asset_inventory.yaml.
+  impact_from_criticality: {low: 2, medium: 3, high: 4, critical: 5}
+rating_bands:
+  - {name: Low, min: 1, max: 4}
+  - {name: Medium, min: 5, max: 9}
+  - {name: High, min: 10, max: 16}
+  - {name: Critical, min: 17, max: 25}
+monte_carlo:
+  trials: 10000
+  seed: 42
+  top_n: 6
+  loss_threshold_usd: 250000     # annual loss Florence management treats as unacceptable
+# Per control: threat, likelihood (1 to 5), effectiveness once the detector passes,
+# and Monte Carlo inputs: annual_event_rate (events per year while the control fails),
+# loss_median_usd and loss_sigma (lognormal loss per event).
+controls:
+  CTRL-IAM-001: {threat: "Attacker takes over a privileged account protected only by a password", likelihood: 4, effectiveness_when_passing: 0.90, annual_event_rate: 0.25, loss_median_usd: 250000, loss_sigma: 1.0}
+  CTRL-IAM-002: {threat: "A compromised account uses permissions it should never have held", likelihood: 3, effectiveness_when_passing: 0.70, annual_event_rate: 0.10, loss_median_usd: 100000, loss_sigma: 1.0}
+  CTRL-IAM-003: {threat: "Attacker reuses a dormant account that nobody monitors", likelihood: 3, effectiveness_when_passing: 0.80, annual_event_rate: 0.10, loss_median_usd: 80000, loss_sigma: 1.0}
+  CTRL-IAM-004: {threat: "Weak password policy lets attackers guess or stuff credentials", likelihood: 3, effectiveness_when_passing: 0.60, annual_event_rate: 0.10, loss_median_usd: 90000, loss_sigma: 1.0}
+  CTRL-DATA-001: {threat: "Unencrypted customer data is read after theft of storage or a snapshot", likelihood: 3, effectiveness_when_passing: 0.90, annual_event_rate: 0.06, loss_median_usd: 600000, loss_sigma: 1.1}
+  CTRL-DATA-002: {threat: "Sensitive traffic is intercepted or downgraded in transit", likelihood: 3, effectiveness_when_passing: 0.85, annual_event_rate: 0.06, loss_median_usd: 200000, loss_sigma: 1.0}
+  CTRL-END-001: {threat: "Attacker exploits software the vendor no longer patches", likelihood: 3, effectiveness_when_passing: 0.80, annual_event_rate: 0.15, loss_median_usd: 300000, loss_sigma: 1.1}
+  CTRL-END-002: {threat: "Malware runs on a device with no working protection", likelihood: 4, effectiveness_when_passing: 0.80, annual_event_rate: 0.20, loss_median_usd: 150000, loss_sigma: 1.0}
+  CTRL-LOG-001: {threat: "An intrusion goes unnoticed because required logs are missing", likelihood: 3, effectiveness_when_passing: 0.70, annual_event_rate: 0.12, loss_median_usd: 120000, loss_sigma: 1.0}
+  CTRL-CLD-001: {threat: "Sensitive data in a public bucket is found and downloaded", likelihood: 5, effectiveness_when_passing: 0.95, annual_event_rate: 0.30, loss_median_usd: 400000, loss_sigma: 1.1}
+  CTRL-BCP-001: {threat: "Ransomware or failure destroys data with no usable backup", likelihood: 2, effectiveness_when_passing: 0.85, annual_event_rate: 0.04, loss_median_usd: 500000, loss_sigma: 1.0}
+  CTRL-NET-001: {threat: "Attacker reaches an administrative port exposed to the internet", likelihood: 5, effectiveness_when_passing: 0.90, annual_event_rate: 0.40, loss_median_usd: 450000, loss_sigma: 1.1}

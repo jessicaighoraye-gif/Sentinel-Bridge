@@ -1,0 +1,542 @@
+{
+  "assessment_id": "ASM-FLORENCE-REMEDIATED",
+  "collected_at": "2026-10-09T09:00:00Z",
+  "status": "COMPLETED",
+  "summary": {
+    "PASS": 25,
+    "FAIL": 8,
+    "INSUFFICIENT": 0,
+    "INPUT_ERROR": 0
+  },
+  "findings": [
+    {
+      "finding_id": "FND-MFA-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-MFA",
+      "control_id": "CTRL-IAM-001",
+      "asset_id": "AST-IDP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "identity:ACC-0001",
+        "identity:ACC-0002",
+        "identity:ACC-0003",
+        "identity:ACC-0004",
+        "identity:ACC-0005",
+        "identity:ACC-0006",
+        "identity:ACC-0007",
+        "identity:ACC-0008",
+        "identity:ACC-0009",
+        "identity:ACC-0010"
+      ],
+      "description": "All 12 in-scope privileged accounts meet the requirement."
+    },
+    {
+      "finding_id": "FND-EXCESS-PRIV-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-EXCESS-PRIV",
+      "control_id": "CTRL-IAM-002",
+      "asset_id": "AST-IDP-001",
+      "status": "FAIL",
+      "severity": "medium",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "identity:ACC-0005",
+        "identity:ACC-0014",
+        "identity:ACC-0027",
+        "identity:ACC-0041"
+      ],
+      "description": "4 of 108 in-scope user accounts fail: u005 holds unused permissions billing:admin; u014 holds unused permissions finance:export; u027 holds unused permissions finance:export; u041 holds unused permissions hr:export."
+    },
+    {
+      "finding_id": "FND-INACTIVE-ACCT-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-INACTIVE-ACCT",
+      "control_id": "CTRL-IAM-003",
+      "asset_id": "AST-IDP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "identity:ACC-0001",
+        "identity:ACC-0002",
+        "identity:ACC-0003",
+        "identity:ACC-0004",
+        "identity:ACC-0005",
+        "identity:ACC-0006",
+        "identity:ACC-0007",
+        "identity:ACC-0008",
+        "identity:ACC-0009",
+        "identity:ACC-0010"
+      ],
+      "description": "All 100 in-scope enabled accounts meet the requirement."
+    },
+    {
+      "finding_id": "FND-PASSWORD-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-PASSWORD",
+      "control_id": "CTRL-IAM-004",
+      "asset_id": "AST-IDP-001",
+      "status": "FAIL",
+      "severity": "medium",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "identity:POL-0001"
+      ],
+      "description": "1 of 1 in-scope local password policies fail: florence.local: minimum length 8, complexity not required, passwords never expire, no account lockout."
+    },
+    {
+      "finding_id": "FND-ENC-REST-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-REST",
+      "control_id": "CTRL-DATA-001",
+      "asset_id": "AST-DB-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:ENC-0001"
+      ],
+      "description": "All 1 in-scope data stores meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-REST-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-REST",
+      "control_id": "CTRL-DATA-001",
+      "asset_id": "AST-STO-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:ENC-0002"
+      ],
+      "description": "All 1 in-scope data stores meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-REST-03",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-REST",
+      "control_id": "CTRL-DATA-001",
+      "asset_id": "AST-STO-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:ENC-0003"
+      ],
+      "description": "All 1 in-scope data stores meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-REST-04",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-REST",
+      "control_id": "CTRL-DATA-001",
+      "asset_id": "AST-BKP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:ENC-0004"
+      ],
+      "description": "All 1 in-scope data stores meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-DB-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0004"
+      ],
+      "description": "All 1 in-scope data flows meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-APP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0001"
+      ],
+      "description": "All 1 in-scope data flows meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-03",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-SRV-001",
+      "status": "FAIL",
+      "severity": "high",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0002"
+      ],
+      "description": "1 of 1 in-scope data flows fail: payment-gateway to partner-network: cleartext http."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-04",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-SRV-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0003"
+      ],
+      "description": "All 1 in-scope data flows meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-05",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-STO-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0005"
+      ],
+      "description": "All 1 in-scope data flows meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENC-TRANSIT-06",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENC-TRANSIT",
+      "control_id": "CTRL-DATA-002",
+      "asset_id": "AST-STO-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "data_protection:FLOW-0006"
+      ],
+      "description": "All 1 in-scope data flows meet the requirement."
+    },
+    {
+      "finding_id": "FND-VULN-SW-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-VULN-SW",
+      "control_id": "CTRL-END-001",
+      "asset_id": "AST-APP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "vulnerability:SW-0001"
+      ],
+      "description": "All 1 in-scope software items meet the requirement."
+    },
+    {
+      "finding_id": "FND-VULN-SW-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-VULN-SW",
+      "control_id": "CTRL-END-001",
+      "asset_id": "AST-SRV-001",
+      "status": "FAIL",
+      "severity": "high",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "vulnerability:SW-0002"
+      ],
+      "description": "1 of 1 in-scope software items fail: Windows Server 2012 R2 6.3 on AST-SRV-001: vendor support ended, CVE-2026-0001 CVSS 9.8."
+    },
+    {
+      "finding_id": "FND-VULN-SW-03",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-VULN-SW",
+      "control_id": "CTRL-END-001",
+      "asset_id": "AST-SRV-002",
+      "status": "FAIL",
+      "severity": "high",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "vulnerability:SW-0003"
+      ],
+      "description": "1 of 1 in-scope software items fail: CentOS Linux 7 on AST-SRV-002: vendor support ended."
+    },
+    {
+      "finding_id": "FND-VULN-SW-04",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-VULN-SW",
+      "control_id": "CTRL-END-001",
+      "asset_id": "AST-END-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "vulnerability:SW-0004"
+      ],
+      "description": "All 1 in-scope software items meet the requirement."
+    },
+    {
+      "finding_id": "FND-VULN-SW-05",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-VULN-SW",
+      "control_id": "CTRL-END-001",
+      "asset_id": "AST-END-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "vulnerability:SW-0005"
+      ],
+      "description": "All 1 in-scope software items meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENDPOINT-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENDPOINT",
+      "control_id": "CTRL-END-002",
+      "asset_id": "AST-END-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "endpoint:DEV-0001",
+        "endpoint:DEV-0002",
+        "endpoint:DEV-0003",
+        "endpoint:DEV-0004",
+        "endpoint:DEV-0005",
+        "endpoint:DEV-0006",
+        "endpoint:DEV-0007",
+        "endpoint:DEV-0008",
+        "endpoint:DEV-0009",
+        "endpoint:DEV-0010"
+      ],
+      "description": "All 70 in-scope devices meet the requirement."
+    },
+    {
+      "finding_id": "FND-ENDPOINT-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-ENDPOINT",
+      "control_id": "CTRL-END-002",
+      "asset_id": "AST-END-002",
+      "status": "FAIL",
+      "severity": "high",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "endpoint:DEV-0082",
+        "endpoint:DEV-0091",
+        "endpoint:DEV-0095"
+      ],
+      "description": "3 of 30 in-scope devices fail: FL-RMT-012: agent not installed, protection inactive, definitions outdated; FL-RMT-021: agent not installed, protection inactive, definitions outdated; FL-RMT-025: definitions outdated."
+    },
+    {
+      "finding_id": "FND-LOGGING-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-LOGGING",
+      "control_id": "CTRL-LOG-001",
+      "asset_id": "AST-LOG-001",
+      "status": "FAIL",
+      "severity": "medium",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "logging:LOG-0003",
+        "logging:LOG-0004"
+      ],
+      "description": "2 of 6 in-scope required log sources fail: customer-db-audit: auditing disabled; perimeter-firewall: source inactive, silent 72 hours."
+    },
+    {
+      "finding_id": "FND-CLOUD-EXPOSURE-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-CLOUD-EXPOSURE",
+      "control_id": "CTRL-CLD-001",
+      "asset_id": "AST-STO-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "cloud_storage:BKT-0001"
+      ],
+      "description": "All 1 in-scope storage resources meet the requirement."
+    },
+    {
+      "finding_id": "FND-CLOUD-EXPOSURE-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-CLOUD-EXPOSURE",
+      "control_id": "CTRL-CLD-001",
+      "asset_id": "AST-STO-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "cloud_storage:BKT-0002"
+      ],
+      "description": "All 1 in-scope storage resources meet the requirement."
+    },
+    {
+      "finding_id": "FND-CLOUD-EXPOSURE-03",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-CLOUD-EXPOSURE",
+      "control_id": "CTRL-CLD-001",
+      "asset_id": "AST-STO-003",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "cloud_storage:BKT-0003"
+      ],
+      "description": "All 1 in-scope storage resources meet the requirement. public-site-assets is public with no sensitive data found."
+    },
+    {
+      "finding_id": "FND-BACKUP-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-DB-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0001"
+      ],
+      "description": "All 1 in-scope resources needing backup meet the requirement."
+    },
+    {
+      "finding_id": "FND-BACKUP-02",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-APP-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0005"
+      ],
+      "description": "Excluded by documented exception: stateless."
+    },
+    {
+      "finding_id": "FND-BACKUP-03",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-SRV-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0006"
+      ],
+      "description": "All 1 in-scope resources needing backup meet the requirement."
+    },
+    {
+      "finding_id": "FND-BACKUP-04",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-SRV-002",
+      "status": "FAIL",
+      "severity": "high",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0007"
+      ],
+      "description": "1 of 1 in-scope resources needing backup fail: reconciliation: no backup policy, last backup failed, last backup 40 days old, retention 0 days, backups not immutable."
+    },
+    {
+      "finding_id": "FND-BACKUP-05",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-STO-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0002"
+      ],
+      "description": "All 1 in-scope resources needing backup meet the requirement."
+    },
+    {
+      "finding_id": "FND-BACKUP-06",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-STO-002",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0003"
+      ],
+      "description": "All 1 in-scope resources needing backup meet the requirement."
+    },
+    {
+      "finding_id": "FND-BACKUP-07",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-BACKUP",
+      "control_id": "CTRL-BCP-001",
+      "asset_id": "AST-STO-003",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "backup:BCK-0004"
+      ],
+      "description": "Excluded by documented exception: stateless."
+    },
+    {
+      "finding_id": "FND-REMOTE-ACCESS-01",
+      "assessment_id": "ASM-FLORENCE-REMEDIATED",
+      "detector_id": "DET-REMOTE-ACCESS",
+      "control_id": "CTRL-NET-001",
+      "asset_id": "AST-NET-001",
+      "status": "PASS",
+      "severity": "none",
+      "detected_at": "2026-10-06T17:57:45Z",
+      "evidence_status": "sufficient",
+      "evidence_ref": [
+        "access_control:RULE-0001",
+        "access_control:RULE-0002"
+      ],
+      "description": "All 2 in-scope administrative firewall rules meet the requirement."
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+# Florence Inc. profile (fictional organization).
+# Single source of company facts.
+
+company:
+  name: Florence Inc.
+  fictional: true
+  industry: Regional fintech and payments
+  employees:
+    total: 100
+    remote: 30
+    onsite: 70
+  # Environment values used by assets. Every asset has exactly one value.
+  environments:
+    - cloud
+    - on_premises
+    - remote
+
+data_handled:
+  - customer_pii
+  - payment_data
+  - employee_information
+  - authentication_and_identity_data
+  - operational_and_application_data
+
+# Asset categories modeled by SentinelBridge.
+# Individual assets are listed in asset_inventory.yaml.
+asset_categories:
+  - identity_platform
+  - customer_database
+  - payment_application_infrastructure
+  - employee_endpoints
+  - cloud_storage
+  - backup_systems
+  - security_logging
+  - remote_access
+
+security_assumptions:
+  - All evidence is simulated and supplied as structured JSON. No live systems are connected.
+  - Florence expects MFA on every privileged human account.
+  - Remote employees reach internal systems only through approved remote-access mechanisms.
+  - Customer and payment data must be protected at rest and in transit.
+  - Security telemetry from critical systems is expected to reach the central logging platform.
+
+business_priorities:
+  - rank: 1
+    priority: Protect customer PII and payment data
+  - rank: 2
+    priority: Keep payment services available
+  - rank: 3
+    priority: Secure the remote workforce
+  - rank: 4
+    priority: Be able to show security evidence to auditors and partners
+
